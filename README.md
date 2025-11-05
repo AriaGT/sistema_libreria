@@ -291,6 +291,6 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
 Adapta los identificadores (`1`, `2`, etc.) y las fechas a los valores reales devueltos por tu base de datos.
 
 ## Notas adicionales
-- Al registrar o actualizar usuarios envia el campo `password`; la API lo encripta y almacena en `password_hash` internamente.
+- Al registrar o actualizar usuarios envia el campo `password`; la API lo encripta y almacena en `password_hash` internamente (longitud maxima 72 bytes UTF-8).
 - Para ejecutar pruebas repetidas, limpia las tablas manualmente o crea una base de datos temporal.
 - Asegura que el usuario configurado en `.env` tenga permisos de creacion de base de datos y tablas.
