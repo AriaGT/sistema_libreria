@@ -60,6 +60,7 @@ Si no deseas crear las tablas en este paso, omite `-CreateTables` o `--create-ta
 | Recurso           | Metodo | Ruta                                    | Descripcion                               |
 |-------------------|--------|-----------------------------------------|-------------------------------------------|
 | Salud             | GET    | `/health`                               | Verifica que la aplicacion este activa    |
+| Autenticacion     | POST   | `/auth/login`                           | Valida credenciales y retorna el usuario  |
 | Usuarios          | GET    | `/users`                                | Lista usuarios                            |
 |                   | GET    | `/users/{id}`                           | Obtiene un usuario                        |
 |                   | POST   | `/users`                                | Crea usuario                              |
@@ -88,7 +89,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
     "full_name": "Ana Docente",
     "email": "ana.docente@example.com",
     "role": "teacher",
-    "password_hash": "hashedpass"
+    "password": "secreto123"
   }
   ```
 - Response body (201 Created):
@@ -111,7 +112,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
     "full_name": "Juan Estudiante",
     "email": "juan.estudiante@example.com",
     "role": "student",
-    "password_hash": "hashedpass"
+    "password": "secreto123"
   }
   ```
 - Response body:
@@ -125,7 +126,31 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   }
   ```
 
-### 3. Crear grado
+### 3. Iniciar sesion
+- Metodo: `POST`
+- Ruta: `/auth/login`
+- Request body:
+  ```json
+  {
+    "email": "ana.docente@example.com",
+    "password": "secreto123"
+  }
+  ```
+- Response body:
+  ```json
+  {
+    "message": "Login successful",
+    "user": {
+      "full_name": "Ana Docente",
+      "email": "ana.docente@example.com",
+      "role": "teacher",
+      "id": 1,
+      "created_at": "2025-01-01T15:30:00+00:00"
+    }
+  }
+  ```
+
+### 4. Crear grado
 - Metodo: `POST`
 - Ruta: `/grades`
 - Request body:
@@ -142,7 +167,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   }
   ```
 
-### 4. Crear seccion para el grado
+### 5. Crear seccion para el grado
 - Metodo: `POST`
 - Ruta: `/grades/1/sections`
 - Request body:
@@ -160,7 +185,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   }
   ```
 
-### 5. Crear curso para la seccion
+### 6. Crear curso para la seccion
 - Metodo: `POST`
 - Ruta: `/sections/1/courses`
 - Request body:
@@ -180,7 +205,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   }
   ```
 
-### 6. Registrar un libro para el curso
+### 7. Registrar un libro para el curso
 - Metodo: `POST`
 - Ruta: `/courses/1/books`
 - Request body:
@@ -209,7 +234,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   }
   ```
 
-### 7. Matricular estudiante en la seccion
+### 8. Matricular estudiante en la seccion
 - Metodo: `POST`
 - Ruta: `/sections/1/enroll`
 - Request body:
@@ -227,7 +252,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   }
   ```
 
-### 8. Consultar estudiantes de la seccion
+### 9. Consultar estudiantes de la seccion
 - Metodo: `GET`
 - Ruta: `/sections/1/students`
 - Response body:
@@ -243,7 +268,7 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
   ]
   ```
 
-### 9. Consultar libros del curso
+### 10. Consultar libros del curso
 - Metodo: `GET`
 - Ruta: `/courses/1/books`
 - Response body:
@@ -266,6 +291,6 @@ Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas
 Adapta los identificadores (`1`, `2`, etc.) y las fechas a los valores reales devueltos por tu base de datos.
 
 ## Notas adicionales
-- El campo `password_hash` debe almacenar datos ya encriptados (la API aun no maneja autenticacion).
+- Al registrar o actualizar usuarios envia el campo `password`; la API lo encripta y almacena en `password_hash` internamente.
 - Para ejecutar pruebas repetidas, limpia las tablas manualmente o crea una base de datos temporal.
 - Asegura que el usuario configurado en `.env` tenga permisos de creacion de base de datos y tablas.

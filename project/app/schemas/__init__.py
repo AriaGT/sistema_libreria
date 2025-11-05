@@ -1,3 +1,4 @@
+from app.schemas.auth import LoginRequest, LoginResponse
 from app.schemas.book import BookCreate, BookRead, BookUpdate
 from app.schemas.course import CourseCreate, CourseRead, CourseUpdate
 from app.schemas.grade import GradeCreate, GradeRead, GradeUpdate
@@ -23,4 +24,6 @@ __all__ = [
     "BookUpdate",
     "StudentSectionCreate",
     "StudentSectionRead",
+    "LoginRequest",
+    "LoginResponse",
 ]

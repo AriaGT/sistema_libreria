@@ -9,7 +9,7 @@ from app.database.connection import engine
 
 # Import models so that SQLAlchemy is aware of them when creating tables.
 from app import models  # noqa: F401
-from app.routers import book, course, grade, section, student_section, user
+from app.routers import auth, book, course, grade, section, student_section, user
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +32,7 @@ def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
+app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(grade.router)
 app.include_router(section.router)

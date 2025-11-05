@@ -1,3 +1,3 @@
-from app.routers import book, course, grade, section, student_section, user
+from app.routers import auth, book, course, grade, section, student_section, user
 
-__all__ = ["user", "grade", "section", "course", "book", "student_section"]
+__all__ = ["auth", "user", "grade", "section", "course", "book", "student_section"]

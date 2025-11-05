@@ -2,12 +2,16 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
+from app.core.security import hash_password
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
 
 
 def create_user(db: Session, user_in: UserCreate) -> User:
-    user = User(**user_in.dict())
+    user_data = user_in.dict()
+    password = user_data.pop("password")
+    user_data["password_hash"] = hash_password(password)
+    user = User(**user_data)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -27,7 +31,12 @@ def update_user(db: Session, user_id: int, user_in: UserUpdate) -> Optional[User
     if not user:
         return None
 
-    for field, value in user_in.dict(exclude_unset=True).items():
+    update_data = user_in.dict(exclude_unset=True)
+    password = update_data.pop("password", None)
+    if password is not None:
+        update_data["password_hash"] = hash_password(password)
+
+    for field, value in update_data.items():
         setattr(user, field, value)
 
     db.add(user)
@@ -44,3 +53,7 @@ def delete_user(db: Session, user_id: int) -> Optional[User]:
     db.delete(user)
     db.commit()
     return user
+
+
+def get_user_by_email(db: Session, email: str) -> Optional[User]:
+    return db.query(User).filter(User.email == email).first()

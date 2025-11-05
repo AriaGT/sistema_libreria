@@ -9,14 +9,14 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    password_hash: str
+    password: str
 
 
 class UserUpdate(BaseModel):
     full_name: str | None = None
     email: EmailStr | None = None
     role: str | None = None
-    password_hash: str | None = None
+    password: str | None = None
 
 
 class UserRead(UserBase):
