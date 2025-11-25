@@ -46,7 +46,10 @@ def update_user(user_id: int, user_in: UserUpdate, db: Session = Depends(get_db)
 
 @router.delete("/{user_id}", response_model=UserRead, status_code=status.HTTP_200_OK)
 def delete_user(user_id: int, db: Session = Depends(get_db)) -> UserRead:
-    user = user_service.delete_user(db, user_id)
+    try:
+        user = user_service.delete_user(db, user_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user
