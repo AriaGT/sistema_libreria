@@ -5,6 +5,10 @@ class StudentSectionCreate(BaseModel):
     student_id: int
 
 
+class StudentSectionUpdate(BaseModel):
+    student_id: int | None = None
+
+
 class StudentSectionRead(BaseModel):
     id: int
     student_id: int

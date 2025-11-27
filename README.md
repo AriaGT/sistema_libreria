@@ -67,15 +67,26 @@ Si no deseas crear las tablas en este paso, omite `-CreateTables` o `--create-ta
 |                   | PATCH  | `/users/{id}`                           | Actualiza usuario                         |
 |                   | DELETE | `/users/{id}`                           | Elimina usuario                           |
 | Grados            | GET    | `/grades`                               | Lista grados                              |
+|                   | GET    | `/grades/{id}`                          | Obtiene un grado                          |
 |                   | POST   | `/grades`                               | Crea grado                                |
+|                   | PATCH  | `/grades/{id}`                          | Actualiza grado                           |
+|                   | DELETE | `/grades/{id}`                          | Elimina grado                             |
 | Secciones         | GET    | `/grades/{grade_id}/sections`           | Lista secciones por grado                 |
 |                   | POST   | `/grades/{grade_id}/sections`           | Crea seccion en un grado                  |
+|                   | PATCH  | `/grades/{grade_id}/sections/{section_id}` | Actualiza una seccion                  |
+|                   | DELETE | `/grades/{grade_id}/sections/{section_id}` | Elimina una seccion                    |
 | Cursos            | GET    | `/sections/{section_id}/courses`        | Lista cursos por seccion                  |
 |                   | POST   | `/sections/{section_id}/courses`        | Crea curso en una seccion                 |
+|                   | PATCH  | `/sections/{section_id}/courses/{course_id}` | Actualiza un curso                    |
+|                   | DELETE | `/sections/{section_id}/courses/{course_id}` | Elimina un curso                      |
 | Libros            | GET    | `/courses/{course_id}/books`            | Lista libros por curso                    |
 |                   | POST   | `/courses/{course_id}/books`            | Crea libro asociado a un curso            |
+|                   | PATCH  | `/courses/{course_id}/books/{book_id}`  | Actualiza un libro                        |
+|                   | DELETE | `/courses/{course_id}/books/{book_id}`  | Elimina un libro                          |
 | Matriculas        | POST   | `/sections/{section_id}/enroll`         | Matricula a un estudiante en la seccion   |
 |                   | GET    | `/sections/{section_id}/students`       | Lista estudiantes de la seccion           |
+|                   | PATCH  | `/sections/{section_id}/enroll/{enrollment_id}` | Actualiza una matricula            |
+|                   | DELETE | `/sections/{section_id}/enroll/{enrollment_id}` | Elimina una matricula              |
 
 ## Ejemplos de pruebas HTTP
 Las siguientes muestras usan `http://127.0.0.1:8000` como base. Puedes copiarlas a Postman, Bruno u otro cliente para repetir el flujo tipico.
@@ -292,5 +303,6 @@ Adapta los identificadores (`1`, `2`, etc.) y las fechas a los valores reales de
 
 ## Notas adicionales
 - Al registrar o actualizar usuarios envia el campo `password`; la API lo encripta y almacena en `password_hash` internamente (longitud maxima 72 bytes UTF-8).
+- Los endpoints de actualizacion y eliminacion validan que los IDs de la ruta coincidan con los datos enviados y devuelven errores 400 si existen violaciones de integridad (claves foraneas, valores nulos o restricciones de unicidad) en lugar de errores 500.
 - Para ejecutar pruebas repetidas, limpia las tablas manualmente o crea una base de datos temporal.
 - Asegura que el usuario configurado en `.env` tenga permisos de creacion de base de datos y tablas.
